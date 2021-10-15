@@ -35,7 +35,7 @@ namespace AutoRank.Extensions
 				rank.PerformCommands(player);
 				if (!silent)
 				{
-					TShock.Users.SetUserGroup(TShock.Users.GetUserByID(player.User.ID), rank.Group().Name);
+					TShock.UserAccounts.SetUserGroup(TShock.UserAccounts.GetUserAccountByID(player.Account.ID), rank.Group().Name);
 					if (!String.IsNullOrWhiteSpace(AutoRank.Config.RankUpMessage))
 						player.SendSuccessMessage(MsgParser.Parse(AutoRank.Config.RankUpMessage, player, rank));
 					if (!String.IsNullOrWhiteSpace(rank.message))

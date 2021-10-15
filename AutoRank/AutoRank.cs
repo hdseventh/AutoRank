@@ -100,7 +100,7 @@ namespace AutoRank
 				return;
 
 			TSPlayer ply = TShock.Players.FirstOrDefault(p => p != null && p.Active && p.IsLoggedIn &&
-				p.User.Name == e.ReceiverAccount.UserAccountName);
+				p.Account.Name == e.ReceiverAccount.UserAccountName);
 			if (ply == null)
 				return;
 
