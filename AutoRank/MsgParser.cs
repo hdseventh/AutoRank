@@ -91,7 +91,14 @@ namespace AutoRank
 				replacements.Add("$nextcost", cost.ToLongString());
 
 				remainder = cost - account.Balance;
-				replacements.Add("$remainder", remainder.ToLongString(true));
+				if (remainder >= 0)
+				{
+					replacements.Add("$remainder", remainder.ToLongString(true));
+				}
+                else
+                {
+					replacements.Add("$remainder", $"None, You are eligible to rankup.");
+				}
 			}
 			replacements.Add("$balance", account.Balance.ToLongString(true));
 			#endregion
@@ -133,6 +140,7 @@ namespace AutoRank
 
 			return Tuple.Create(parsed, remainder);
 		}
+
 
 		public static Tuple<string, Money> ParseRankTree(List<Rank> tree, int index, IBankAccount account)
 		{

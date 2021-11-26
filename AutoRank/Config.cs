@@ -13,9 +13,10 @@ namespace AutoRank
 	{
 		private static string savepath = Path.Combine(TShock.SavePath, "AutoRank");
 		private static string filepath = Path.Combine(savepath, "AutoRank.json");
-
+		public bool AutoRank = true;
 		public string RankUpMessage = "[AutoRank] You've been auto-ranked to %GROUP%!";
 		public string RankCmdAlias = "rank";
+		public string RankUpCmd = "rankup";
 		public string RankCmdMsg = "[$rankindex/$rankcount] Current Rank: $rankname. Next rank in $remainder.";
 		public string MaxRankMsg = "[$rankindex/$rankcount] Current Rank: $rankname.";
 		public List<Rank> Ranks = new List<Rank>()

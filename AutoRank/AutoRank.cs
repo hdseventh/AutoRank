@@ -79,11 +79,16 @@ namespace AutoRank
 			#region Commands
 			Commands.ChatCommands.Add(new Command(RankCheck, Config.RankCmdAlias));
 			Commands.ChatCommands.Add(new Command("autorank.reload", Reload, "rank-reload"));
+
+			if(!Config.AutoRank)
+				Commands.ChatCommands.Add(new Command(RankUp, Config.RankUpCmd));
 			#endregion
 		}
 
 		async void BankTransferCompleted(object sender, BankTransferEventArgs e)
 		{
+			if (!Config.AutoRank)
+				return;
 			// Null check the instance - Thanks Wolfje
 			if (SEconomyPlugin.Instance == null)
 				return;
@@ -156,6 +161,35 @@ namespace AutoRank
 			}
 		}
 
+		async void RankUp(CommandArgs args)
+        {
+			if (SEconomyPlugin.Instance == null)
+				return;
+			TSPlayer player = args.Player;
+			IBankAccount account = SEconomyPlugin.Instance.GetPlayerBankAccount(args.Player.Name);
+			// The world account does not have a rank
+			if (account == null ||
+				!account.IsAccountEnabled ||
+				account.IsSystemAccount ||
+				SEconomyPlugin.Instance.WorldAccount == null)
+				return;
+
+			TSPlayer ply = TShock.Players.FirstOrDefault(p => p != null && p.Active && p.IsLoggedIn &&
+				p.Account.Name == account.UserAccountName);
+			if (ply == null)
+				return;
+
+			var rank = ply.GetRank();
+			if (rank != null)
+			{
+				var ranks = rank.FindNextRanks(account.Balance);
+				if (ranks != null && ranks.Count > 0)
+				{
+					await ply.RankUpAsync(ranks);
+				}
+			}
+		}
+
 		async void RankCheck(CommandArgs args)
 		{
 			if (SEconomyPlugin.Instance == null)
@@ -178,18 +212,7 @@ namespace AutoRank
 
 				if (tuple != null)
 				{
-					if (!Utils.IsLastRankInLine(rank, ranktree) && tuple.Item2 < 0)
-					{
-						var ranks = rank.FindNextRanks(
-							SEconomyPlugin.Instance.GetBankAccount(args.Player).Balance);
-
-						args.Player.SendWarningMessage("Fixing your rank...");
-						await args.Player.RankUpAsync(ranks);
-					}
-					else
-					{
 						args.Player.SendInfoMessage(tuple.Item1);
-					}
 					return;
 				}
 			}

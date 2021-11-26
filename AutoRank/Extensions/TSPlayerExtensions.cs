@@ -79,11 +79,13 @@ namespace AutoRank.Extensions
 			if (SEconomyPlugin.Instance == null)
 				return;
 
+
 			IBankAccount account = SEconomyPlugin.Instance.GetBankAccount(player);
 			if (account != null && SEconomyPlugin.Instance.WorldAccount != null)
 			{
 				AutoRank.TransactionLock[player.Index] = true;
 				Money balance = account.Balance;
+
 				var task = await account.TransferToAsync(SEconomyPlugin.Instance.WorldAccount, cost,
 					BankAccountTransferOptions.SuppressDefaultAnnounceMessages, "", $"AutoRank ({String.Join(",", line.Select(r => r.name))})");
 				AutoRank.TransactionLock[player.Index] = false;
