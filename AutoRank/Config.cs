@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 using TShockAPI;
 using Newtonsoft.Json;
 
@@ -14,6 +11,7 @@ namespace AutoRank
 		private static string savepath = Path.Combine(TShock.SavePath, "AutoRank");
 		private static string filepath = Path.Combine(savepath, "AutoRank.json");
 		public bool AutoRank = true;
+		public bool RankUpCostMoney = true;
 		public string RankUpMessage = "[AutoRank] You've been auto-ranked to %GROUP%!";
 		public string RankCmdAlias = "rank";
 		public string RankUpCmd = "rankup";

@@ -11,6 +11,7 @@ namespace AutoRank.Extensions
 {
 	public static class TSPlayerExtensions
 	{
+		public static Config Config { get; set; }
 		/// <summary>
 		/// Gets the player's rank.
 		/// </summary>
@@ -71,14 +72,16 @@ namespace AutoRank.Extensions
 				return;
 
 			Money cost = 0;
-			for (int i = 0; i < line.Count; i++)
+			if (Config.RankUpCostMoney)
 			{
-				cost += line[i].Cost();
+				for (int i = 0; i < line.Count; i++)
+				{
+					cost += line[i].Cost();
+				}
 			}
 
 			if (SEconomyPlugin.Instance == null)
 				return;
-
 
 			IBankAccount account = SEconomyPlugin.Instance.GetBankAccount(player);
 			if (account != null && SEconomyPlugin.Instance.WorldAccount != null)
